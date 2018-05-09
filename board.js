@@ -79,8 +79,7 @@ var Board = function(size){
                 if(s == this.STONE){
                     this.map[coordinates["X"]][coordinates["Y"]] = this.STONE; 
                     s = this.TREE;
-                    console.log(s);
-                l++;                
+                    l++;                
                 } else {
                     this.map[coordinates["X"]][coordinates["Y"]] = this.TREE;
                     s = this.STONE;
@@ -132,8 +131,7 @@ var Board = function(size){
         if(x >= 0 && x < this.size && y >= 0 && y < this.size) {
             if(this.map[x][y] == this.PLAYER1 || this.map[x][y] == this.PLAYER2){
                 return true;
-            }
-            
+            }            
         }
         return false;
     };
@@ -146,7 +144,6 @@ var Board = function(size){
 };
 
 var Display = function() {
-    /*this.field = document.getElementById("field");*/
     this.field = $("#field");
     this.init = function(boardSize){
         this.setSize(boardSize);
@@ -165,7 +162,6 @@ var Display = function() {
                 height = "100px";
             }
         document.documentElement.style.setProperty("--grid-size", boardSize);
-        //$(":root").css("--grid-size", boardSize);
         document.documentElement.style.setProperty("--grid-width", width);
         document.documentElement.style.setProperty("--grid-height", height);
     };
@@ -206,8 +202,7 @@ var Dashboard = function(board){
         var text = message;
         var el = $("#message");
         el.empty().append("<p>" + text + "</p>");
-        //el.append("<p>" + text + "</p>");
-    }
+    };
 };
 
 var Weapon = function(id, name, damage){
@@ -232,6 +227,8 @@ var Player = function(id, name, health){
 var Game = function(size){
     this.boardSize = size;
     this.goes = 0;
+    this.max_goes = 3;
+    this.min_goes = 0;
     this.board = new Board(this.boardSize);
     this.display = new Display();
     this.dashboard = new Dashboard(this.board);
@@ -249,6 +246,7 @@ var Game = function(size){
         this.welcomeMessage();
     };
     this.keyHandler = function(event){
+        event.preventDefault();
         switch(event.key){
             case "ArrowLeft" :
                 game.move("left");
@@ -274,7 +272,7 @@ var Game = function(size){
         var newY;
         var oldX = this.currentPlayer.x;
         var oldY = this.currentPlayer.y;
-       
+              
         switch(direction){
             case 'left' :
                 newY = oldY - 1;
@@ -294,23 +292,26 @@ var Game = function(size){
                 break;
             case 'enter':
                 this.endMove();
+                newX = oldX;
+                newY = oldY;
                 break;
             default:
                 //do nothing
         }
                
-            this.movePlayer(oldX, oldY, newX, newY);
+        this.movePlayer(oldX, oldY, newX, newY);
     };
     this.movePlayer = function(oldX, oldY, newX, newY){
         var attack = false;
-        var newPosVal = this.board.map[newX][newY];        
+        var moved = false;
         if(newX >= 0 && newX < this.boardSize && newY >= 0 && newY < this.boardSize) {
+           var newPosVal = this.board.map[newX][newY];  
            if (newPosVal === this.board.GRASS){
                 this.board.map[oldX][oldY] = this.board.GRASS;
                 this.board.map[newX][newY] = this.currentPlayer.id;
                 this.currentPlayer.setPosition(newX, newY);
                 attack = this.board.checkAttackCondition(newX, newY);
-                this.countMoves();
+                moved = true;
                 
             } else if (newPosVal >= this.board.WEAPON1 && newPosVal <= this.board.WEAPON5) {
                 this.board.map[oldX][oldY] = this.currentPlayer.weapon.id;
@@ -318,24 +319,31 @@ var Game = function(size){
                 this.board.map[newX][newY] = this.currentPlayer.id;
                 this.currentPlayer.setPosition(newX, newY);
                 attack = this.board.checkAttackCondition(newX, newY);
-                this.countMoves();
+                moved = true;
             } 
+             if(attack){
+                document.removeEventListener("keydown", this.keyHandler);
+                this.goes--;
+                this.initiateAttack();
+             }
+            
+            if(moved){
+                this.countMoves();
+            }
         }
         
-        if(attack){
-            this.initiateAttack();
-        }
+       
         this.display.draw(this.board);
         this.dashboard.generate();
     };
     this.countMoves = function(){
         this.goes++;
-        if(this.goes >= 3){
-            this.endMove();
+        if(this.goes >= this.max_goes){
+           this.endMove();
         }
     };
     this.endMove = function() {
-            this.goes = 0;
+            this.goes = this.min_goes;
             if(this.currentPlayer.id === this.board.player1.id) {
                 this.currentPlayer = this.board.player2;
                 this.opponent = this.board.player1;
@@ -352,8 +360,7 @@ var Game = function(size){
         this.dashboard.updateMessage(text);
     }; 
     this.initiateAttack = function(){
-        this.currentModal(); 
-        
+        this.currentModal();         
     };
     this.fight = function(){
         var currFight = this.currFightMode;
@@ -386,7 +393,24 @@ var Game = function(size){
             + opponent.health + " health points.";
             this.dashboard.updateMessage(text);
             this.dashboard.generate();
-        }    
+        }
+        
+        if(current.health <= 0 || opponent.health <= 0){
+            $(".game-over-modal").css("display", "block");
+            if (current.health <=0) {
+                var winner = opponent.name;
+                var looser = current.name;
+                $(".winner").empty().append(winner);
+                $(".looser").empty().append(looser);
+            } else {
+                looser = opponent.name;
+                winner = current.name;
+                $(".looser").empty().append(looser);
+                $(".winner").empty().append(winner);
+            }
+        }
+        
+        document.addEventListener("keydown", this.keyHandler);
     };
     this.attackCurr = function(){
         this.currFightMode = "attack";
@@ -414,6 +438,11 @@ var Game = function(size){
         $(".modal-current").css("display", "none");
         $(".player").empty().append(this.opponent.name);
         $(".modal-opp").css("display", "block");
+    };
+    this.playAgain = function(){
+       $(".game-over-modal").css("display", "none");
+         this.game = new Game(10);     
+         this.game.start();          
     };
 };
 

@@ -58,7 +58,7 @@ h1 {
   display: flex;
 }
 
-#begin-button {
+#begin-button, #play-again {
   width: 20rem;
   height: 3rem;
   color: #fbf7d7;
@@ -225,7 +225,7 @@ h4 {
 }
 
 /* The Modal (background) */
-.modal-current, .modal-opp {
+.modal-current, .modal-opp, .game-over-modal {
   display: none; 
   position: fixed; 
   z-index: 1;
@@ -286,4 +286,22 @@ h4 {
   transform: rotate(10deg);
 }
 
+.game-over-modal .modal-content {
+  background-color: #4e0200;
+  width: 60%;
+}
+
+.looser {
+  color: #cc9900;
+  font-family: 'Fontdiner Swanky', cursive;
+  background: linear-gradient(to bottom right,  #cc9900, yellow);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+#play-again {
+    width: auto;
+    margin: 0;
+    display: block;
+}
 

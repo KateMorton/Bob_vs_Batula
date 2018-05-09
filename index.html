@@ -105,12 +105,19 @@
                 <h4 id="attack-button" onclick="game.attackOpp()">ATTACK</h4>
                 <h4 id="defend-button" onclick="game.defendOpp()">DEFEND</h4>
             </div>
-          </div> 
+          </div>
         </div>
         
-    
-        
-              
+          <!--Game Over modal-->
+        <div id="myModal" class="game-over-modal">
+          <div class="modal-content">
+              <h3 class="winner"></h3>
+              <p>has defeated <span class="looser"></span></p>
+              <div>
+                  <h2 id="play-again" onclick="game.playAgain()">Play Again</h2>
+              </div>
+          </div>            
+        </div>             
         
         <!--javaScript files--> 
         <script src="jquery-3.3.1.js"></script>
