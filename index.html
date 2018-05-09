@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8"/>
+
+		<title></title>
+        <link href="https://fonts.googleapis.com/css?family=Cabin+Sketch:400,700" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Fontdiner+Swanky" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Nanum+Pen+Script" rel="stylesheet">
+		<link href="game.css" rel="stylesheet" type="text/css">
+	</head>
+
+	<body>
+       <div id="container">
+            <!--Dashboard-->
+            <div id="dashboard">
+                <h3>Dashboard</h3>
+                <div id="messages">
+                    <h4>Messages:</h4>
+                    <div id="message"></div>
+                </div> 
+                <div id="player1">
+                    <h4>Player 1</h4>
+                    <ul>
+                        <li>Name: </li>
+                        <li>Weapon: </li>
+                        <li>Health: </li>
+                        <li>Damage:</li>
+                    </ul>    
+                </div>
+                <div id="player2">
+                    <h4>Player 2</h4>
+                    <ul>
+                        <li>Name: </li>
+                        <li>Weapon: </li>
+                        <li>Health: </li>
+                        <li>Damage:</li>
+                    </ul>            
+                </div>                           
+            </div>
+           <!--Game board-->
+            <div id="game-board">
+                <!--game start screen-->
+               <div id="field" class="wrapper">
+                    <div id="game-start">
+                        <h1>BOB v's BATULA</h1>
+                        <div class="graphic">
+                            <img src="images/bob.png">
+                            <h3>Battle of the Baddies!</h3>
+                            <img src="images/Batula.png">
+                        </div>    
+                        <h2 id="begin-button" onclick="game.start()">Begin Game</h2>
+                    </div>
+                </div>
+            </div>
+            <div id="weapons">
+                <h3>Weapons</h3>
+                <div id="weapon-img">
+                    <div>
+                        <img src="images/bow.png">
+                        <p>arrow/ damage: 5</p>                    
+                    </div>
+                    <div>
+                        <img src="images/sword.png">
+                        <p>sword/ damage: 5</p>
+                    </div>
+                    <div>
+                        <img src="images/snowflake.png">
+                        <p>ice/ damage: 20</p>
+                    </div>
+                    <div>
+                        <img src="images/fire.png">
+                        <p>fire/ damage: 25</p>
+                    </div>
+                    <div>
+                        <img src="images/Slime.png">
+                        <p>slime/ damage: 30</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--modals-->
+        <div id="myModal" class="modal-current">
+
+          <!-- Modal content -->
+          <div class="modal-content">
+            <h3 class="player"></h3>
+            <p>Do you choose to attack or defend?</p>
+            <div>
+                <h4 id="attack-button" onclick="game.attackCurr()">ATTACK</h4>
+                <h4 id="defend-button" onclick="game.defendCurr()">DEFEND</h4>
+            </div>
+          </div> 
+        </div>
+        <div id="myModal" class="modal-opp">
+
+          <!-- Modal content -->
+          <div class="modal-content">
+            <h3 class="player"></h3>
+            <p>Do you choose to attack or defend?</p>
+            <div>
+                <h4 id="attack-button" onclick="game.attackOpp()">ATTACK</h4>
+                <h4 id="defend-button" onclick="game.defendOpp()">DEFEND</h4>
+            </div>
+          </div> 
+        </div>
+        
+    
+        
+              
+        
+        <!--javaScript files--> 
+        <script src="jquery-3.3.1.js"></script>
+        <script src="board.js"></script>
+
+	</body>
+
+
+</html>
+
