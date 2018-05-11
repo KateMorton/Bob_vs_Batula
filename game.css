@@ -35,7 +35,6 @@ h4, h5, h6 {
   flex-direction: column;
   width: 700px;
   height: 700px;
-  /*background-color: #184179;*/
 }
 
 h1 {
@@ -72,7 +71,7 @@ h1 {
 /*Game board*/
 #game-board {
   display: inline-block;
-  width: 65%;
+  width: 698px;
   border: 2px solid #4e0200;
 }
 
@@ -89,13 +88,6 @@ h1 {
 #field {
   width: 700px;
   height: 700px;   
-}
-.box {
-  background-color: #444;
-  color: #fff;
-  border-radius: 0px;
-  padding: 20px;
-  font-size: 150%;
 }
 
 .grass {
@@ -141,10 +133,6 @@ h1 {
 
 .player2 {
   background-image: url('images/player2.png');
-}
-
-#game-board, #dashboard, #weapons {
-  display: inline-block;
 }
 
 /*Dashboard*/

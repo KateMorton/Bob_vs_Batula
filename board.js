@@ -157,7 +157,7 @@ var Display = function() {
         this.field.empty();
         for(var i = 0; i < board.map.length; i++){
             for(var j = 0; j < board.map.length; j++){
-               var div = $("<div>", {"class": "box " + dict[board.map[i][j]]});
+               var div = $("<div>", {"class": dict[board.map[i][j]]});
                this.field.append(div);
             }
         }
