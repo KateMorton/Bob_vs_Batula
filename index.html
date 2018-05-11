@@ -111,11 +111,16 @@
           <!--Game Over modal-->
         <div id="myModal" class="game-over-modal">
           <div class="modal-content">
-              <h3 class="winner"></h3>
-              <p>has defeated <span class="looser"></span></p>
-              <div>
-                  <h2 id="play-again" onclick="game.playAgain()">Play Again</h2>
+              <div class="winner-img"></div>
+              <div class="modal-Content">
+                  <h3 class="winner"></h3>
+                  <p class="is-winner">has defeated <span class="looser"></span>!</p>
+                  <p class="no-winner"><span>Bob</span> and <span>Baluta</span> have defeated each other.<br /> <span>There is no winner</span>!!</p>
+                  <div>
+                      <h2 id="play-again" onclick="playAgain()">Play Again</h2>
+                  </div>
               </div>
+              <div class="looser-img"></div>
           </div>            
         </div>             
         

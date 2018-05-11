@@ -8,7 +8,7 @@ var dict = {
     6: "weapon5",
     10: "player1",
     11: "player2",
-    12: "tree" //delete this is does not work
+    12: "tree" 
 };
 
 var Board = function(size){
@@ -40,7 +40,7 @@ var Board = function(size){
     this.player2.weapon = this.weapon5;
     this.GRASS = 0;
     this.STONE = 1;
-    this.TREE = 12;//delete this is does not work
+    this.TREE = 12;
     this.OBSTICLE = .10;
     this.start = function() {
         this.generateGrass();
@@ -56,18 +56,6 @@ var Board = function(size){
              }          
       }
     };
-    /*this.generateObsticles = function(){
-          var obsticles = Math.ceil(this.size * this.size * this.OBSTICLE);
-          var l = 0;
-          while (l < obsticles) {
-            var coordinates = this.generateXY(0, this.size);
-            var spaceFree = (this.map[coordinates["X"]][coordinates["Y"]] === this.GRASS);
-            if (spaceFree) {
-                this.map[coordinates["X"]][coordinates["Y"]] = this.STONE; 
-                l++;
-            }        
-        }
-    };*/
     this.generateObsticles = function(){
           var obsticles = Math.ceil(this.size * this.size * this.OBSTICLE);
           var l = 0;
@@ -397,17 +385,18 @@ var Game = function(size){
         
         if(current.health <= 0 || opponent.health <= 0){
             $(".game-over-modal").css("display", "block");
-            if (current.health <=0) {
+            if (current.health <= 0 && opponent.health <= 0) {
+               $(".winner, .is-winner").css("display", "none");
+               $(".modal-content .no-winner").css("display", "block");               
+            } else if (current.health <= 0) {
                 var winner = opponent.name;
                 var looser = current.name;
-                $(".winner").empty().append(winner);
-                $(".looser").empty().append(looser);
-            } else {
+                this.gameOverModal(winner, looser);
+            } else if (opponent.health <= 0) {
                 looser = opponent.name;
                 winner = current.name;
-                $(".looser").empty().append(looser);
-                $(".winner").empty().append(winner);
-            }
+                this.gameOverModal(winner, looser);
+           }
         }
         
         document.addEventListener("keydown", this.keyHandler);
@@ -439,11 +428,21 @@ var Game = function(size){
         $(".player").empty().append(this.opponent.name);
         $(".modal-opp").css("display", "block");
     };
-    this.playAgain = function(){
-       $(".game-over-modal").css("display", "none");
-         this.game = new Game(10);     
-         this.game.start();          
+    this.gameOverModal = function(winner, looser){
+        $(".winner").empty().append(winner);
+        $(".looser").empty().append(looser);
+        if(winner == "Bob"){
+            $(".winner-img").append('<img src="images/bob.png">');
+            $(".looser-img").append('<img src="images/player2_Die.png">');
+        } else if (winner == "Batula"){
+            $(".winner-img").append('<img src="images/batula.png">');
+            $(".looser-img").append('<img src="images/player1_Die.png">');
+        } 
     };
 };
+
+function playAgain(){
+       location.reload();
+}
 
 var game = new Game(10);

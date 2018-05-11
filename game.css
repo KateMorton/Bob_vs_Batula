@@ -286,17 +286,25 @@ h4 {
   transform: rotate(10deg);
 }
 
-.game-over-modal .modal-content {
+.game-over-modal > .modal-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   background-color: #4e0200;
-  width: 60%;
+  width: 50%;
 }
 
-.looser {
+span {
   color: #cc9900;
   font-family: 'Fontdiner Swanky', cursive;
   background: linear-gradient(to bottom right,  #cc9900, yellow);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.no-winner {
+  display: none;
 }
 
 #play-again {
