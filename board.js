@@ -344,7 +344,7 @@ var Game = function(size){
         this.dashboard.updateMessage(text); 
      };
     this.welcomeMessage = function(){
-        var text = "Welcome to the game! " + this.board.player1.name + " moves first!";
+        var text = "Welcome to the game! " + " Use arrow keys to move, " + this.board.player1.name + " moves first!";
         this.dashboard.updateMessage(text);
     }; 
     this.initiateAttack = function(){
@@ -361,38 +361,42 @@ var Game = function(size){
             var text = current.name + " and " + opponent.name + " have both attacked! " +
             current.name + " now has " + current.health + " health points. " + opponent.name + " now has "
             + opponent.health + " health points.";
+            this.dead();
             this.dashboard.updateMessage(text);
             this.dashboard.generate();
         } else if (currFight === "attack" && oppFight === "defend"){
             opponent.health = opponent.health - current.weapon.damage / 2;
             text = current.name + " has attacked " + opponent.name + " and " + opponent.name +
             " has defended. " + opponent.name + " now has " + opponent.health + " health points.";
+            this.dead();
             this.dashboard.updateMessage(text);
             this.dashboard.generate();
         } else if (currFight === "defend" && oppFight === "attack") {
             current.health = current.health - opponent.weapon.damage / 2;
              text = opponent.name + " has attacked " + current.name + " and " + current.name +
             " has defended. " + current.name + " now has " + current.health + " health points.";
+            this.dead();
             this.dashboard.updateMessage(text);
             this.dashboard.generate();
         } else {
             text = current.name + " and " + opponent.name + " have do not want to fight! " +
             current.name + " still has " + current.health + " health. " + opponent.name + " still has "
             + opponent.health + " health points.";
+            this.dead();
             this.dashboard.updateMessage(text);
             this.dashboard.generate();
         }
         
-        if(current.health <= 0 || opponent.health <= 0){
+        if(current.health === "dead" || opponent.health === "dead"){
             $(".game-over-modal").css("display", "block");
-            if (current.health <= 0 && opponent.health <= 0) {
+            if (current.health === "dead" && opponent.health === "dead") {
                $(".winner, .is-winner").css("display", "none");
                $(".modal-content .no-winner").css("display", "block");               
-            } else if (current.health <= 0) {
+            } else if (current.health === "dead") {
                 var winner = opponent.name;
                 var looser = current.name;
                 this.gameOverModal(winner, looser);
-            } else if (opponent.health <= 0) {
+            } else if (opponent.health === "dead") {
                 looser = opponent.name;
                 winner = current.name;
                 this.gameOverModal(winner, looser);
@@ -428,6 +432,14 @@ var Game = function(size){
         $(".player").empty().append(this.opponent.name);
         $(".modal-opp").css("display", "block");
     };
+    this.dead = function(){
+        if(this.currentPlayer.health <= 0) {
+            this.currentPlayer.health = "dead";
+        }
+         if(this.opponent.health <= 0) {
+            this.opponent.health = "dead";
+        }
+    }
     this.gameOverModal = function(winner, looser){
         $(".winner").empty().append(winner);
         $(".looser").empty().append(looser);
@@ -437,7 +449,7 @@ var Game = function(size){
         } else if (winner == "Batula"){
             $(".winner-img").append('<img src="images/batula.png">');
             $(".looser-img").append('<img src="images/player1_Die.png">');
-        } 
+        }      
     };
 };
 
